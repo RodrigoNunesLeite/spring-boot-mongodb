@@ -1,8 +1,11 @@
 package com.rodrigonunes.springbootmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /* Document = para o spring saber que se trata de uma coleção
@@ -19,6 +22,11 @@ public class User implements Serializable {
 	private String id;
 	private String name;
 	private String email;
+	
+	// DBRef = indica referencia dessa lista com os posts
+	// lazy = true comando pra nao retornar a lista de posts, sempre que buscar os usuários
+	@DBRef(lazy = true)
+	private List<Post> posts = new ArrayList<>();
 
 	public User() {
 		
@@ -54,6 +62,14 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 
 	@Override
 	public int hashCode() {
@@ -79,5 +95,5 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }
