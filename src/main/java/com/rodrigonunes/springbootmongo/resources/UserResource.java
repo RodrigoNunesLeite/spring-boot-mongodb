@@ -1,14 +1,17 @@
 package com.rodrigonunes.springbootmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rodrigonunes.springbootmongo.domain.User;
 import com.rodrigonunes.springbootmongo.dto.UserDTO;
@@ -40,5 +43,19 @@ public class UserResource {
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
+		User obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		
+		// retornando um cabeçalho com o id do novo usuário
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
+		/*
+		 * retorna o código 201 com o cabeçalho do novo registro criado
+		 * */
+		return ResponseEntity.created(uri).build();
+	} 
 }
 
