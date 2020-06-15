@@ -3,6 +3,8 @@
 
 package com.rodrigonunes.springbootmongo.repository;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,11 @@ import com.rodrigonunes.springbootmongo.domain.Post;
  * */
 @Repository
 public interface PostRepository extends MongoRepository<Post, String> {
-
+	
+	/*
+	 * Aqui é um query methods, ele vai procurar 
+	 * automaticamente um post que o campo
+	 * title seja igual a string
+	 * */
+	List<Post> findByTitleContainingIgnoreCase(String text);
 }
