@@ -2,9 +2,20 @@ package com.rodrigonunes.springbootmongo.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/* Document = para o spring saber que se trata de uma coleção
+ * do mongo
+ * O spring coloca por padrão o mesmo nome da classe com letra miniscula,
+ * mas podemos definir um nome tbm
+ * */
+
+@Document(collection="user")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	private String id;
 	private String name;
 	private String email;
